@@ -25,7 +25,12 @@ export async function sigInWithPassword({
   email: string;
   password: string;
 }) {
-  const response = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) throw error;
+  return data;
 }
 
 export async function signInWithOAuth(provider: Provider) {
