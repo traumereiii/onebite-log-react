@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useIsSessionLoaded, useSetSession } from "@/store/session.ts";
 import SessionProvider from "@/provider/SessionProvider.tsx";
 import GlobalLoader from "@/components/GlobalLoader.tsx";
+import ModalProvider from "@/provider/ModalProvider.tsx";
 
 function App() {
   const setSession = useSetSession();
@@ -23,7 +24,9 @@ function App() {
 
   return (
     <SessionProvider>
-      <RootRoute />
+      <ModalProvider>
+        <RootRoute />
+      </ModalProvider>
     </SessionProvider>
   );
 }
