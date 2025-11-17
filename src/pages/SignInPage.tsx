@@ -2,9 +2,9 @@ import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { Link } from "react-router";
 import { useState } from "react";
-import { useSignInWithPassword } from "@/hooks/mutations/use-sign-in-with-password.ts";
+import { useSignInWithPassword } from "@/hooks/mutations/auth/use-sign-in-with-password.ts";
 import gitHubLogo from "@/assets/github-mark.svg";
-import { useSignInWithOauth } from "@/hooks/mutations/use-sign-in-with-oauth.ts";
+import { useSignInWithOauth } from "@/hooks/mutations/auth/use-sign-in-with-oauth.ts";
 import { toast } from "sonner";
 import { generateErrorMessage } from "@/lib/error.ts";
 
