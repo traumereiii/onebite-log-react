@@ -65,6 +65,8 @@ export default function PostEditorModal() {
         onPositive: () => close(),
         onNegative: () => {},
       });
+    } else {
+      close();
     }
   };
 
