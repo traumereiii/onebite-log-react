@@ -38,6 +38,25 @@ export default function PostEditorModal() {
     },
   });
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [content]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      images.forEach((image) => {
+        URL.revokeObjectURL(image.previewUrl);
+      });
+      return;
+    }
+    setContent("");
+    setImages([]);
+    textareaRef.current?.focus();
+  }, [isOpen]);
+
   const handleCloseModal = () => {
     if (content !== "" || images.length > 0) {
       openAlertModal({
@@ -68,6 +87,7 @@ export default function PostEditorModal() {
         ]);
       });
     }
+
     // 재선택 시 동작하지 않는 오류 방지
     e.target.value = "";
   };
@@ -76,21 +96,8 @@ export default function PostEditorModal() {
     setImages((prevImages) =>
       prevImages.filter((item) => item.previewUrl !== image.previewUrl),
     );
+    URL.revokeObjectURL(image.previewUrl);
   };
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
-  }, [content]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    setContent("");
-    setImages([]);
-    textareaRef.current?.focus();
-  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleCloseModal}>
