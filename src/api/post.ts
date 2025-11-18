@@ -1,12 +1,19 @@
 import supabase from "@/lib/supabase.ts";
 import { uploadImage } from "@/api/image.ts";
-import { PostEntity } from "@/types.ts";
+import { Post, PostEntity } from "@/types.ts";
 
-export async function fetchPosts() {
+export async function fetchPosts({
+  from,
+  to,
+}: {
+  from: number;
+  to: number;
+}): Promise<Post[]> {
   const { data, error } = await supabase
     .from("post")
     .select("*, author: profile!author_id (*)")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .range(from, to);
   if (error) throw error;
   return data;
 }
