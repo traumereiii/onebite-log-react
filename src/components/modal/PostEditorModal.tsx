@@ -186,7 +186,7 @@ export default function PostEditorModal() {
             </CarouselContent>
           </Carousel>
         )}
-        {postEditorModal.isOpen && postEditorModal.type === "EDIT" && (
+        {postEditorModal.isOpen && postEditorModal.type === "CREATE" && (
           <Button
             onClick={() => {
               fileInputRef.current?.click();

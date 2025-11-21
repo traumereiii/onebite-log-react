@@ -16,7 +16,7 @@ export default function DeletePostButton({ id }: { id: number }) {
       title: "포스트 삭제",
       description: "삭제한 포스트는 되돌릴 수 없습니다. 정말 삭제하시겠습니까?",
       onPositive: () => {
-        deletePost({ id });
+        deletePost(id);
       },
 
       onNegative: () => {},
@@ -24,7 +24,7 @@ export default function DeletePostButton({ id }: { id: number }) {
   };
 
   return (
-    <Button className="cursor-pointer" variant={"ghost"}>
+    <Button onClick={handleDeleteClick} className="cursor-pointer" variant={"ghost"}>
       삭제
     </Button>
   );
