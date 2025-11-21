@@ -4,6 +4,7 @@ import PostItem from "@/components/post/PostItem.tsx";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 import { useInfinitePostsData } from "@/hooks/queries/use-infinite-posts-data.ts";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function PostFeed() {
   const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
@@ -22,7 +23,7 @@ export default function PostFeed() {
   return (
     <div>
       {data.pages.map((page) =>
-        page.map((post) => <PostItem key={post.id} {...post} />),
+        page.map((postId) => <PostItem key={postId} postId={postId} />),
       )}
       {isFetchingNextPage && <Loader />}
       <div ref={ref}></div>

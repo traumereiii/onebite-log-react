@@ -1,22 +1,30 @@
-import { Post, PostEntity } from "@/types.ts";
 import { HeartIcon, MessageCircle } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel.tsx";
-import { Button } from "@/components/ui/button.tsx";
 import defaultAvatar from "@/assets/default-avatar.jpg";
 import { formatTimeAgo } from "@/lib/time.ts";
 import EditPostButton from "@/components/post/EditPostButton.tsx";
 import DeletePostButton from "@/components/post/DeletePostButton.tsx";
 import { useSession } from "@/store/session.ts";
+import { usePostByIdData } from "@/hooks/queries/use-post-by-id-data.ts";
+import Loader from "@/components/Loader.tsx";
+import Fallback from "@/components/Fallback.tsx";
 
-export default function PostItem(post: Post) {
+export default function PostItem({ postId }: { postId: number }) {
   const session = useSession();
   const userId = session?.user.id;
 
-  const isMine = post.author_id === userId
+  const {
+    data: post,
+    isPending,
+    error,
+  } = usePostByIdData({ postId, type: "FEED" });
+  if (isPending) return <Loader />;
+  if (error) return <Fallback />;
+  const isMine = post.author_id === userId;
 
   return (
     <div className="flex flex-col gap-4 border-b pb-8">
@@ -41,12 +49,12 @@ export default function PostItem(post: Post) {
 
         {/* 1-2. 수정/삭제 버튼 */}
         <div className="text-muted-foreground flex text-sm">
-          {
-            isMine && <>
+          {isMine && (
+            <>
               <EditPostButton {...post} />
               <DeletePostButton id={post.id} />
             </>
-          }
+          )}
         </div>
       </div>
 

@@ -18,6 +18,16 @@ export async function fetchPosts({
   return data;
 }
 
+export async function fetchPostById(postId: number): Promise<Post> {
+  const { data, error } = await supabase
+    .from("post")
+    .select("*, author: profile!author_id (*)")
+    .eq("id", postId)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
 export async function createPost(content: string): Promise<PostEntity> {
   const { data, error } = await supabase
     .from("post")
