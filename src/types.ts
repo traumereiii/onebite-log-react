@@ -2,8 +2,9 @@ import { type Database } from "@/database.types.ts";
 
 export type PostEntity = Database["public"]["Tables"]["post"]["Row"];
 export type ProfileEntity = Database["public"]["Tables"]["profile"]["Row"];
+export type LikeEntity = Database["public"]["Tables"]["like"]["Row"];
 
-export type Post = PostEntity & { author: ProfileEntity };
+export type Post = PostEntity & { author: ProfileEntity; isLiked: boolean };
 
 export type UseMutationCallback = {
   onSuccess?: () => void;

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/lib/constants.ts";
 import { fetchPostById } from "@/api/post.ts";
+import { useSession } from "@/store/session.ts";
 
 export function usePostByIdData({
   postId,
@@ -9,9 +10,10 @@ export function usePostByIdData({
   postId: number;
   type: "FEED" | "DETAIL";
 }) {
+  const session = useSession();
   return useQuery({
     queryKey: QUERY_KEYS.post.byId(postId),
-    queryFn: () => fetchPostById(postId),
+    queryFn: () => fetchPostById({ postId, userId: session!.user.id }),
     enabled: type !== "FEED",
   });
 }
