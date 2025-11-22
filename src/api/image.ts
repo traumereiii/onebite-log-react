@@ -23,9 +23,15 @@ export async function deleteImagesInPath(path: string) {
     .from(BUCKET_NAME)
     .list(path);
 
+  if (!files || files.length === 0) {
+    return;
+  }
+
   if (fetchFilesError) throw fetchFilesError;
 
-  const { error: removeError } = await supabase.storage.from(BUCKET_NAME).remove(files?.map(file => `${path}/${file.name}`))
+  const { error: removeError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .remove(files?.map((file) => `${path}/${file.name}`));
 
   if (removeError) throw removeError;
 }
