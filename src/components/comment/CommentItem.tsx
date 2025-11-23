@@ -5,15 +5,37 @@ import { formatTimeAgo } from "@/lib/time.ts";
 import { useSession } from "@/store/session.ts";
 import { useState } from "react";
 import CommentEditor from "@/components/comment/CommentEditor.tsx";
+import { useDeleteComment } from "@/hooks/mutations/comment/use-delete-comment.ts";
+import { toast } from "sonner";
+import { useOpenAlertModal } from "@/store/alert-modal.ts";
 
 export default function CommentItem(props: Comment) {
   const session = useSession();
+  const openAlertModal = useOpenAlertModal();
   const [isEditing, setIsEditing] = useState(false);
   const toggleIsEditing = () => {
     setIsEditing(!isEditing);
   };
 
+  const { mutate: deleteComment, isPending: isDeleteCommentPending } =
+    useDeleteComment({
+      onSuccess: () => {},
+      onError: (error) => {
+        toast.error("댓글 삭제에 실패했습니다.", { position: "top-center" });
+      },
+    });
+
   const isMine = session?.user.id === props.author.id;
+
+  const handleDeleteClick = () => {
+    openAlertModal({
+      title: "댓글 삭제",
+      description: "삭제된 댓글은 되돌릴 수 없습니다. 정말 삭제 하시겠습니까?",
+      onPositive: () => {
+        deleteComment(props.id);
+      },
+    });
+  };
 
   return (
     <div className={"flex flex-col gap-8 border-b pb-5"}>
@@ -55,7 +77,12 @@ export default function CommentItem(props: Comment) {
                     수정
                   </div>
                   <div className="bg-border h-[13px] w-[2px]"></div>
-                  <div className="cursor-pointer hover:underline">삭제</div>
+                  <div
+                    onClick={handleDeleteClick}
+                    className="cursor-pointer hover:underline"
+                  >
+                    삭제
+                  </div>
                 </>
               )}
             </div>
