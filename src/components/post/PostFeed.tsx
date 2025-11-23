@@ -23,7 +23,9 @@ export default function PostFeed({ authorId }: { authorId?: string }) {
   return (
     <div>
       {data.pages.map((page) =>
-        page.map((postId) => <PostItem key={postId} postId={postId} />),
+        page.map((postId) => (
+          <PostItem key={postId} postId={postId} type={"FEED"} />
+        )),
       )}
       {isFetchingNextPage && <Loader />}
       <div ref={ref}></div>

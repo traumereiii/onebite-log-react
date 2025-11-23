@@ -1,14 +1,20 @@
+import PostItem from "@/components/post/PostItem.tsx";
 import { Navigate, useParams } from "react-router";
-import ProfileInfo from "@/components/profile/ProfileInfo.tsx";
+import CommentEditor from "@/components/comment/CommentEditor.tsx";
+import CommentList from "@/components/comment/CommentList.tsx";
 
 export default function PostDetailPage() {
   const params = useParams();
-  const userId = params.userId;
-  if (!userId) return <Navigate to={"/"} replace />;
+  const postId = params.postId;
+
+  if (!postId) return <Navigate to={"/"} />;
 
   return (
-    <div>
-      <ProfileInfo userId={userId} />
+    <div className="flex flex-col gap-5">
+      <PostItem postId={Number(postId)} type={"DETAIL"} />
+      <div className="text-xl font-bold">댓글</div>
+      <CommentEditor postId={Number(postId)} />
+      <CommentList />
     </div>
   );
 }
