@@ -30,3 +30,21 @@ export async function createComment({
   if (error) throw error;
   return data;
 }
+
+export async function updateComment({
+  commentId,
+  content,
+}: {
+  commentId: number;
+  content: string;
+}) {
+  const { data, error } = await supabase
+    .from("comment")
+    .update({ content: content })
+    .eq("id", commentId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
